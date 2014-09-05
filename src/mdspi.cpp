@@ -3,36 +3,35 @@
 #include "mdspi.h"
 
 using namespace std;
-#pragma warning(disable : 4996)
 
 extern int requestId;  
 extern HANDLE g_hEvent;
 
-void CtpMdSpi::OnRspError(CThostFtdcRspInfoField *pRspInfo,
+void MdSpi::OnRspError(CThostFtdcRspInfoField *pRspInfo,
 		int nRequestID, bool bIsLast)
 {
-  IsErrorRspInfo(pRspInfo);
+    IsErrorRspInfo(pRspInfo);
 }
 
-void CtpMdSpi::OnFrontDisconnected(int nReason)
+void MdSpi::OnFrontDisconnected(int nReason)
 {
   cerr<<" ��Ӧ | �����ж�..." 
     << " reason=" << nReason << endl;
 }
 		
-void CtpMdSpi::OnHeartBeatWarning(int nTimeLapse)
+void MdSpi::OnHeartBeatWarning(int nTimeLapse)
 {
   cerr<<" ��Ӧ | ������ʱ����..." 
     << " TimerLapse = " << nTimeLapse << endl;
 }
 
-void CtpMdSpi::OnFrontConnected()
+void MdSpi::OnFrontConnected()
 {
 	cerr<<" ���ӽ���ǰ��...�ɹ�"<<endl;
   SetEvent(g_hEvent);
 }
 
-void CtpMdSpi::ReqUserLogin(TThostFtdcBrokerIDType	appId,
+void MdSpi::ReqUserLogin(TThostFtdcBrokerIDType	appId,
 	        TThostFtdcUserIDType	userId,	TThostFtdcPasswordType	passwd)
 {
 	CThostFtdcReqUserLoginField req;
@@ -45,7 +44,7 @@ void CtpMdSpi::ReqUserLogin(TThostFtdcBrokerIDType	appId,
   SetEvent(g_hEvent);
 }
 
-void CtpMdSpi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,
+void MdSpi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,
 		CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (!IsErrorRspInfo(pRspInfo) && pRspUserLogin)
@@ -56,7 +55,7 @@ void CtpMdSpi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,
   if(bIsLast) SetEvent(g_hEvent);
 }
 
-void CtpMdSpi::SubscribeMarketData(char* instIdList)
+void MdSpi::SubscribeMarketData(char* instIdList)
 {
   vector<char*> list;
   char *token = strtok(instIdList, ",");
@@ -72,7 +71,7 @@ void CtpMdSpi::SubscribeMarketData(char* instIdList)
   SetEvent(g_hEvent);
 }
 
-void CtpMdSpi::OnRspSubMarketData(
+void MdSpi::OnRspSubMarketData(
          CThostFtdcSpecificInstrumentField *pSpecificInstrument, 
          CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
@@ -80,7 +79,7 @@ void CtpMdSpi::OnRspSubMarketData(
   if(bIsLast)  SetEvent(g_hEvent);
 }
 
-void CtpMdSpi::OnRspUnSubMarketData(
+void MdSpi::OnRspUnSubMarketData(
              CThostFtdcSpecificInstrumentField *pSpecificInstrument,
              CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
@@ -88,7 +87,7 @@ void CtpMdSpi::OnRspUnSubMarketData(
   if(bIsLast)  SetEvent(g_hEvent);
 }
 
-void CtpMdSpi::OnRtnDepthMarketData(
+void MdSpi::OnRtnDepthMarketData(
              CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
   cerr<<" ���� | ��Լ:"<<pDepthMarketData->InstrumentID
@@ -102,7 +101,7 @@ void CtpMdSpi::OnRtnDepthMarketData(
     <<" �ֲ���:"<< pDepthMarketData->OpenInterest <<endl;
 }
 
-bool CtpMdSpi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo)
+bool MdSpi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo)
 {	
   bool ret = ((pRspInfo) && (pRspInfo->ErrorID != 0));
   if (ret){

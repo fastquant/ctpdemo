@@ -1,6 +1,9 @@
-cmake_minimum_required(VERSION 2.8)
 project(ctpdemo)
-
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+cmake_minimum_required(VERSION 2.8)
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 find_package(CTP REQUIRED)
-add_subdirectory(src)
+include_directories(${CTP_INCLUDE_DIR})
+message(STATUS ${CTP_INCLUDE_DIR})
+aux_source_directory(src SRC_LIST)
+add_executable(${PROJECT_NAME} ${SRC_LIST})
+
