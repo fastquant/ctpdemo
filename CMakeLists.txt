@@ -6,4 +6,5 @@ include_directories(${CTP_INCLUDE_DIR})
 message(STATUS ${CTP_INCLUDE_DIR})
 aux_source_directory(src SRC_LIST)
 add_executable(${PROJECT_NAME} ${SRC_LIST})
+target_link_libraries(${PROJECT_NAME} ${CTP_MD_LIBRARY})
 
