@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="GB2312"?>
+    <!--
+        中国证券交易标准 期货交易传输协议标准1.0(Securities Exchange Protocol 1.0)描述用DTD
+    -->
+    <!ELEMENT ftd (packages, tids, fields, items, types)>
+    <!--
+        ftd中包含下列内容
+            packages    所有报文的定义
+            tids        所有的报文编号的定义
+            fields      所有域的定义
+            items       所有字段的定义
+            types       所有衍生类型的定义
+    -->
+    <!ELEMENT packages (packageDefine*)>
+    <!--
+        packages中是一组packageDefine
+    -->
+    <!ELEMENT packageDefine (field*)>
+    <!ATTLIST packageDefine
+        name    NMTOKEN                         #REQUIRED
+        tid     NMTOKEN                         #REQUIRED
+        model   (none|dialog|private|market)    #REQUIRED
+        comment CDATA                           #IMPLIED
+    >
+    <!--
+        每个packageDefine中可以定义下列属性
+            name       报文名称, 在packages中唯一
+            tid        报文编号, 应该出现在tids中的tidDefine中的name中
+            comment    报文说明
+        在每个packageDefine中, 需要用field说明包含的所有域的使用
+    -->
+    <!ELEMENT field EMPTY>
+    <!ATTLIST field
+            name     NMTOKEN    #REQUIRED
+            maxOccur CDATA      #REQUIRED
+            minOccur CDATA      #REQUIRED
+            comment  CDATA      #IMPLIED
+    >
+    <!--
+        在报文定义中使用的域不需要给出详细说明,仅仅是对fields中定义的域的引用。
+        每个field中可以定义下列属性
+            name        域名称, 应该出现在fields中的fieldDefine中的name中
+            maxOccur    报文中该域最多出现次数, 应当是整数,或者用*表示任意多个
+            minOccur    报文中该域最少出现次数, 应当是整数
+            comment     在此报文中使用该域的说明(不是域本身的说明)
+    -->
+    <!ELEMENT tids (tidDefine*)>
+    <!--
+        tids中是一组tidDefine
+    -->
+    <!ELEMENT tidDefine EMPTY>
+    <!ATTLIST tidDefine
+            name  NMTOKEN    #REQUIRED
+            value NMTOKEN    #REQUIRED
+    >
+    <!--
+        每个报文编号定义tidDefine中可以定义下列属性
+            name     编号名称, 在tids中唯一
+            value    编号的值, 应当是一个整数
+    -->
+    <!ELEMENT fields (fieldDefine*)>
+    <!--
+        fields中是一组fieldDefine
+    -->
+    <!ELEMENT fieldDefine (item*)>
+    <!ATTLIST fieldDefine
+        name     NMTOKEN    #REQUIRED
+        fid      NMTOKEN    #REQUIRED
+        fidValue NMTOKEN    #REQUIRED
+        comment  CDATA      #IMPLIED
+    >
+    <!--
+        每个域定义fieldDefine中可以定义下列属性
+            name        域的名称, 在fields中唯一
+            fid         域编号
+            fidValue    域编号的值, 应当是一个整数
+            comment     域说明
+        在每个fieldDefine中, 需要说明包含的字段item的使用
+    -->
+    <!ELEMENT item EMPTY>
+    <!ATTLIST item
+        name    NMTOKEN    #REQUIRED
+        comment CDATA      #IMPLIED
+    >
+    <!--
+        在域中使用的字段不需要给出详细说明, 仅仅是对items中定义的字段的引用
+        每个item中可以定义下列属性
+            name       字段名称, 应该出现在items中的itemDefine中的name中
+            comment    在此域中使用该字段的说明(不是字段本身的说明)
+    -->
+    <!ELEMENT items (itemDefine*)>
+    <!--
+        items中是一组itemDefine
+    -->
+    <!ELEMENT itemDefine EMPTY>
+    <!ATTLIST itemDefine
+        name       NMTOKEN    #REQUIRED
+        type       CDATA      #REQUIRED
+        comment    CDATA      #IMPLIED
+    >
+    <!--
+        每个字段定义 itemDefine 中可以定义下列属性
+        name       字段的名称, 在items中唯一
+        type       字段类型, 应该是基本类型, 或者出现在types中的typeDefine中的name中
+        comment    字段说明
+    -->
+    <!ELEMENT types (typeDefine*)>
+    <!--
+        types中是一组typeDefine
+    -->
+    <!ELEMENT typeDefine (enumValue*)>
+    <!ATTLIST typeDefine
+        name         NMTOKEN   #REQUIRED
+        baseType     CDATA     #REQUIRED
+        length       CDATA     #IMPLIED
+        precision    CDATA     #IMPLIED
+        comment      CDATA     #IMPLIED
+    >
+    <!--
+        每个衍生类型定义typeDefine中可以定义下列属性
+           name        类型名称,在types中唯一
+           baseType    基础类型,即此类型实际上就是什么类型,应该是
+               FTDStringType或
+               FTDNumberType或
+               FTDFloatType或
+               FTDCharType或
+               FTDWordType或
+               FTDIntType加上可能的长度说明
+           comment     类型说明, 一般用于说明其格式和用途
+        如果该类型只有有限的几个允许的取值, 那么就需要定义枚举值enumValue
+    -->
+    <!ELEMENT enumValue EMPTY>
+    <!ATTLIST enumValue
+        name       CDATA    #REQUIRED
+        comment    CDATA    #IMPLIED
+    >
+    <!--
+        每个枚举值可以定义下列属性
+            name       枚举值, 应当符合所属的类型定义
+            comment    该枚举值表示的意义
+    -->

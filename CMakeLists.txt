@@ -1,10 +1,10 @@
 project(ctpdemo)
 cmake_minimum_required(VERSION 2.8)
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+list(APPEND CMAKE_CXX_FLAGS "-std=c++11")
 find_package(CTP REQUIRED)
 include_directories(${CTP_INCLUDE_DIR})
 message(STATUS ${CTP_INCLUDE_DIR})
 aux_source_directory(src SRC_LIST)
 add_executable(${PROJECT_NAME} ${SRC_LIST})
 target_link_libraries(${PROJECT_NAME} ${CTP_MD_LIBRARY})
-
